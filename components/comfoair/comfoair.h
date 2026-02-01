@@ -9,6 +9,8 @@
 #include "esphome/components/sensor/sensor.h"
 #include "esphome/components/select/select.h"
 #include "esphome/components/text_sensor/text_sensor.h"
+#include "esphome/components/number/number.h"
+#include "esphome/components/button/button.h"
 #include "registers.h"
 
 namespace esphome
@@ -27,6 +29,18 @@ namespace esphome
 
     protected:
       void control(const std::string &value) override;
+
+    private:
+      ComfoAirComponent *parent_{nullptr};
+    };
+
+    class ComfoAirSyncButton : public button::Button
+    {
+    public:
+      void set_parent(ComfoAirComponent *parent) { this->parent_ = parent; }
+
+    protected:
+      void press_action() override { parent_->set_fan_percentages(); }
 
     private:
       ComfoAirComponent *parent_{nullptr};
@@ -265,6 +279,33 @@ namespace esphome
           uint8_t command[1] = {(uint8_t)((temperature + 20.0f) * 2.0f)};
           write_command_(CMD_SET_COMFORT_TEMPERATURE, command, sizeof(command));
         }
+      }
+
+      void set_fan_percentages(uint8_t exh_0, uint8_t exh_1, uint8_t exh_2, uint8_t exh_3, 
+                               uint8_t sup_0, uint8_t sup_1, uint8_t sup_2, uint8_t sup_3)
+      {
+        // Ensure all numbers are linked before proceeding
+        if (!return_air_level_absent || !return_air_level_low || !return_air_level_medium || !return_air_level_high ||
+            !supply_air_level_absent || !supply_air_level_low || !supply_air_level_medium || !supply_air_level_high) {
+            ESP_LOGW("comfoair", "Cannot sync: One or more fan level entities are missing.");
+            return;
+        }
+
+        uint8_t data[9];
+        // Map states to bytes according to 0xCF specification
+        // std::clamp provides a final hardware safety check
+        data[0] = (uint8_t)std::clamp((int)return_air_level_absent->state, 15, 95);
+        data[1] = (uint8_t)std::clamp((int)return_air_level_low->state, 15, 95);
+        data[2] = (uint8_t)std::clamp((int)return_air_level_medium->state, 15, 95);
+        data[3] = (uint8_t)std::clamp((int)supply_air_level_absent->state, 15, 95);
+        data[4] = (uint8_t)std::clamp((int)supply_air_level_low->state, 15, 95);
+        data[5] = (uint8_t)std::clamp((int)supply_air_level_medium->state, 15, 95);
+        data[6] = (uint8_t)std::clamp((int)return_air_level_high->state, 15, 95);
+        data[7] = (uint8_t)std::clamp((int)supply_air_level_high->state, 15, 95);
+        data[8] = 0x00; // Reserved/Padding
+
+        ESP_LOGD("comfoair", "Sending 0xCF: Setting fan speed percentages.");
+        this->send_command(0xCF, data, 9);
       }
 
       void write_command_(const uint8_t command, const uint8_t *command_data, uint8_t command_data_length)
@@ -552,6 +593,18 @@ namespace esphome
             mode = climate::CLIMATE_MODE_FAN_ONLY;
             break;
           }
+
+          // Update Return Air (Exhaust) Numbers
+          if (return_air_level_absent != nullptr) return_air_level_absent->publish_state(msg[0]);
+          if (return_air_level_low != nullptr)    return_air_level_low->publish_state(msg[1]);
+          if (return_air_level_medium != nullptr) return_air_level_medium->publish_state(msg[2]);
+          if (return_air_level_high != nullptr)   return_air_level_high->publish_state(msg[6]);
+
+          // Update Supply Air Numbers
+          if (supply_air_level_absent != nullptr) supply_air_level_absent->publish_state(msg[3]);
+          if (supply_air_level_low != nullptr)    supply_air_level_low->publish_state(msg[4]);
+          if (supply_air_level_medium != nullptr) supply_air_level_medium->publish_state(msg[5]);
+          if (supply_air_level_high != nullptr)   supply_air_level_high->publish_state(msg[7]);
 
           publish_state();
 
@@ -1135,6 +1188,14 @@ namespace esphome
       sensor::Sensor *rf_high_time_short_minutes{nullptr};
       sensor::Sensor *rf_high_time_long_minutes{nullptr};
       sensor::Sensor *extractor_hood_switch_off_delay_minutes{nullptr};
+      number::Number *return_air_level_absent{nullptr};
+      number::Number *return_air_level_low{nullptr};
+      number::Number *return_air_level_medium{nullptr};
+      number::Number *return_air_level_high{nullptr};
+      number::Number *supply_air_level_absent{nullptr};
+      number::Number *supply_air_level_low{nullptr};
+      number::Number *supply_air_level_medium{nullptr};
+      number::Number *supply_air_level_high{nullptr};
 
       void set_type(text_sensor::TextSensor *type) { this->type = type; };
       void set_size(text_sensor::TextSensor *size) { this->size = size; };
@@ -1219,6 +1280,14 @@ namespace esphome
       void set_rf_high_time_short_minutes(sensor::Sensor *rf_high_time_short_minutes) { this->rf_high_time_short_minutes = rf_high_time_short_minutes; };
       void set_rf_high_time_long_minutes(sensor::Sensor *rf_high_time_long_minutes) { this->rf_high_time_long_minutes = rf_high_time_long_minutes; };
       void set_extractor_hood_switch_off_delay_minutes(sensor::Sensor *extractor_hood_switch_off_delay_minutes) { this->extractor_hood_switch_off_delay_minutes = extractor_hood_switch_off_delay_minutes; };
+      void set_return_air_level_absent(number::Number *return_air_level_absent) { this->return_air_level_absent = return_air_level_absent; };
+      void set_return_air_level_low(number::Number *return_air_level_low) { this->return_air_level_low = return_air_level_low; };
+      void set_return_air_level_medium(number::Number *return_air_level_medium) { this->return_air_level_medium = return_air_level_medium; };
+      void set_return_air_level_high(number::Number *return_air_level_high) { this->return_air_level_high = return_air_level_high; };
+      void set_supply_air_level_absent(number::Number *supply_air_level_absent) { this->supply_air_level_absent = supply_air_level_absent; };
+      void set_supply_air_level_low(number::Number *supply_air_level_low) { this->supply_air_level_low = supply_air_level_low; };
+      void set_supply_air_level_medium(number::Number *supply_air_level_medium) { this->supply_air_level_medium = supply_air_level_medium; };
+      void set_supply_air_level_high(number::Number *supply_air_level_high) { this->supply_air_level_high = supply_air_level_high; };
     };
 
     inline const char *ComfoAirComponent::unit_size_text_label_(uint8_t raw_size) const
