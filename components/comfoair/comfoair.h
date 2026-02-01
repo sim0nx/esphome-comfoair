@@ -1303,49 +1303,49 @@ namespace esphome
       };
       void set_return_air_level_low(ComfoAirNumber *n)
       {
-        this->return_air_level_low = return_air_level_low;
+        this->return_air_level_low = n;
         if (this->return_air_level_low != nullptr) {
           this->return_air_level_low->set_parent(this);
         }
       };
       void set_return_air_level_medium(ComfoAirNumber *n)
       {
-        this->return_air_level_medium = return_air_level_medium;
+        this->return_air_level_medium = n;
         if (this->return_air_level_medium != nullptr) {
           this->return_air_level_medium->set_parent(this);
         }
       };
       void set_return_air_level_high(ComfoAirNumber *n)
       {
-        this->return_air_level_high = return_air_level_high;
+        this->return_air_level_high = n;
         if (this->return_air_level_high != nullptr) {
           this->return_air_level_high->set_parent(this);
         }
       };
       void set_supply_air_level_absent(ComfoAirNumber *n)
       {
-        this->supply_air_level_absent = supply_air_level_absent;
+        this->supply_air_level_absent = n;
         if (this->supply_air_level_absent != nullptr) {
           this->supply_air_level_absent->set_parent(this);
         }
       };
       void set_supply_air_level_low(ComfoAirNumber *n)
       {
-        this->supply_air_level_low = supply_air_level_low;
+        this->supply_air_level_low = n;
         if (this->supply_air_level_low != nullptr) {
           this->supply_air_level_low->set_parent(this);
         }
       };
       void set_supply_air_level_medium(ComfoAirNumber *n)
       {
-        this->supply_air_level_medium = supply_air_level_medium;
+        this->supply_air_level_medium = n;
         if (this->supply_air_level_medium != nullptr) {
           this->supply_air_level_medium->set_parent(this);
         }
       };
       void set_supply_air_level_high(ComfoAirNumber *n)
       {
-        this->supply_air_level_high = supply_air_level_high;
+        this->supply_air_level_high = n;
         if (this->supply_air_level_high != nullptr) {
           this->supply_air_level_high->set_parent(this);
         }
