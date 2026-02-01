@@ -36,10 +36,14 @@ namespace esphome
 
     class ComfoAirNumber : public number::Number
     {
+    public:
+      void set_parent(ComfoAirComponent *parent) { this->parent_ = parent; }
+
     protected:
-      void control(float value) override {
-        this->publish_state(value);
-      }
+      void control(float value) override;
+
+    private:
+      ComfoAirComponent *parent_{nullptr};
     };
 
     class ComfoAirSyncButton : public button::Button
@@ -58,6 +62,7 @@ namespace esphome
     {
       friend class ComfoAirSizeSelect;
       friend class ComfoAirSyncButton;
+      friend class ComfoAirNumber;
 
     public:
       // Poll every 600ms
@@ -1289,14 +1294,62 @@ namespace esphome
       void set_rf_high_time_short_minutes(sensor::Sensor *rf_high_time_short_minutes) { this->rf_high_time_short_minutes = rf_high_time_short_minutes; };
       void set_rf_high_time_long_minutes(sensor::Sensor *rf_high_time_long_minutes) { this->rf_high_time_long_minutes = rf_high_time_long_minutes; };
       void set_extractor_hood_switch_off_delay_minutes(sensor::Sensor *extractor_hood_switch_off_delay_minutes) { this->extractor_hood_switch_off_delay_minutes = extractor_hood_switch_off_delay_minutes; };
-      void set_return_air_level_absent(ComfoAirNumber *return_air_level_absent) { this->return_air_level_absent = return_air_level_absent; };
-      void set_return_air_level_low(ComfoAirNumber *return_air_level_low) { this->return_air_level_low = return_air_level_low; };
-      void set_return_air_level_medium(ComfoAirNumber *return_air_level_medium) { this->return_air_level_medium = return_air_level_medium; };
-      void set_return_air_level_high(ComfoAirNumber *return_air_level_high) { this->return_air_level_high = return_air_level_high; };
-      void set_supply_air_level_absent(ComfoAirNumber *supply_air_level_absent) { this->supply_air_level_absent = supply_air_level_absent; };
-      void set_supply_air_level_low(ComfoAirNumber *supply_air_level_low) { this->supply_air_level_low = supply_air_level_low; };
-      void set_supply_air_level_medium(ComfoAirNumber *supply_air_level_medium) { this->supply_air_level_medium = supply_air_level_medium; };
-      void set_supply_air_level_high(ComfoAirNumber *supply_air_level_high) { this->supply_air_level_high = supply_air_level_high; };
+      void set_return_air_level_absent(ComfoAirNumber *n)
+      {
+        this->return_air_level_absent = n;
+        if (this->return_air_level_absent != nullptr) {
+          this->return_air_level_absent->set_parent(this);
+        }
+      };
+      void set_return_air_level_low(ComfoAirNumber *n)
+      {
+        this->return_air_level_low = return_air_level_low;
+        if (this->return_air_level_low != nullptr) {
+          this->return_air_level_low->set_parent(this);
+        }
+      };
+      void set_return_air_level_medium(ComfoAirNumber *n)
+      {
+        this->return_air_level_medium = return_air_level_medium;
+        if (this->return_air_level_medium != nullptr) {
+          this->return_air_level_medium->set_parent(this);
+        }
+      };
+      void set_return_air_level_high(ComfoAirNumber *n)
+      {
+        this->return_air_level_high = return_air_level_high;
+        if (this->return_air_level_high != nullptr) {
+          this->return_air_level_high->set_parent(this);
+        }
+      };
+      void set_supply_air_level_absent(ComfoAirNumber *n)
+      {
+        this->supply_air_level_absent = supply_air_level_absent;
+        if (this->supply_air_level_absent != nullptr) {
+          this->supply_air_level_absent->set_parent(this);
+        }
+      };
+      void set_supply_air_level_low(ComfoAirNumber *n)
+      {
+        this->supply_air_level_low = supply_air_level_low;
+        if (this->supply_air_level_low != nullptr) {
+          this->supply_air_level_low->set_parent(this);
+        }
+      };
+      void set_supply_air_level_medium(ComfoAirNumber *n)
+      {
+        this->supply_air_level_medium = supply_air_level_medium;
+        if (this->supply_air_level_medium != nullptr) {
+          this->supply_air_level_medium->set_parent(this);
+        }
+      };
+      void set_supply_air_level_high(ComfoAirNumber *n)
+      {
+        this->supply_air_level_high = supply_air_level_high;
+        if (this->supply_air_level_high != nullptr) {
+          this->supply_air_level_high->set_parent(this);
+        }
+      };
       void set_sync_fan_levels(ComfoAirSyncButton *b)
       {
         this->sync_button_ = b;
@@ -1434,6 +1487,13 @@ namespace esphome
         {
           this->publish_state(current_option);
         }
+      }
+    }
+
+    inline void ComfoAirNumber::control(float value) {
+      this->publish_state(value);
+      if (this->parent_ != nullptr) {
+        this->parent_->set_fan_percentages();
       }
     }
 
