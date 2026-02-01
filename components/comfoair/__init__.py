@@ -545,6 +545,7 @@ comfoair_sensors_schemas = cv.Schema(
         ).extend(),
 
         cv.Optional(CONF_RETURN_AIR_LEVEL_ABSENT): number.number_schema(
+            number.Number,
             unit_of_measurement=UNIT_PERCENT,
             icon=ICON_FAN,
         ).extend({
@@ -554,6 +555,7 @@ comfoair_sensors_schemas = cv.Schema(
             cv.Optional(cv.CONF_STEP, default=1): cv.positive_float,
         }),
         cv.Optional(CONF_RETURN_AIR_LEVEL_LOW): number.number_schema(
+            number.Number,
             unit_of_measurement=UNIT_PERCENT,
             icon=ICON_FAN,
         ).extend({
@@ -563,6 +565,7 @@ comfoair_sensors_schemas = cv.Schema(
             cv.Optional(cv.CONF_STEP, default=1): cv.positive_float,
         }),
         cv.Optional(CONF_RETURN_AIR_LEVEL_MEDIUM): number.number_schema(
+            number.Number,
             unit_of_measurement=UNIT_PERCENT,
             icon=ICON_FAN,
         ).extend({
@@ -572,6 +575,7 @@ comfoair_sensors_schemas = cv.Schema(
             cv.Optional(cv.CONF_STEP, default=1): cv.positive_float,
         }),
         cv.Optional(CONF_RETURN_AIR_LEVEL_HIGH): number.number_schema(
+            number.Number,
             unit_of_measurement=UNIT_PERCENT,
             icon=ICON_FAN,
         ).extend({
@@ -581,7 +585,9 @@ comfoair_sensors_schemas = cv.Schema(
             cv.Optional(cv.CONF_STEP, default=1): cv.positive_float,
         }),
         cv.Optional(CONF_SUPPLY_AIR_LEVEL_ABSENT): number.number_schema(
+            number.Number,
             unit_of_measurement=UNIT_PERCENT,
+            icon=ICON_FAN,
         ).extend({
             cv.Optional(cv.CONF_INITIAL_VALUE, default=15): cv.positive_float,
             cv.Optional(cv.CONF_MIN_VALUE, default=15): cv.positive_float,
@@ -589,6 +595,7 @@ comfoair_sensors_schemas = cv.Schema(
             cv.Optional(cv.CONF_STEP, default=1): cv.positive_float,
         }),
         cv.Optional(CONF_SUPPLY_AIR_LEVEL_LOW): number.number_schema(
+            number.Number,
             unit_of_measurement=UNIT_PERCENT,
             icon=ICON_FAN,
         ).extend({
@@ -598,6 +605,7 @@ comfoair_sensors_schemas = cv.Schema(
             cv.Optional(cv.CONF_STEP, default=1): cv.positive_float,
         }),
         cv.Optional(CONF_SUPPLY_AIR_LEVEL_MEDIUM): number.number_schema(
+            number.Number,
             unit_of_measurement=UNIT_PERCENT,
             icon=ICON_FAN,
         ).extend({
@@ -607,6 +615,7 @@ comfoair_sensors_schemas = cv.Schema(
             cv.Optional(cv.CONF_STEP, default=1): cv.positive_float,
         }),
         cv.Optional(CONF_SUPPLY_AIR_LEVEL_HIGH): number.number_schema(
+            number.Number,
             unit_of_measurement=UNIT_PERCENT,
             icon=ICON_FAN,
         ).extend({
