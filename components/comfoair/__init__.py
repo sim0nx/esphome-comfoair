@@ -547,59 +547,74 @@ comfoair_sensors_schemas = cv.Schema(
         cv.Optional(CONF_RETURN_AIR_LEVEL_ABSENT): number.number_schema(
             unit_of_measurement=UNIT_PERCENT,
             icon=ICON_FAN,
-            min_value=15,
-            max_value=95,
-            step=1
-        ).extend({cv.Required(cv.CONF_INITIAL_VALUE): 15}),
+        ).extend({
+            cv.Optional(cv.CONF_INITIAL_VALUE, default=15): cv.positive_float,
+            cv.Optional(cv.CONF_MIN_VALUE, default=15): cv.positive_float,
+            cv.Optional(cv.CONF_MAX_VALUE, default=95): cv.positive_float,
+            cv.Optional(cv.CONF_STEP, default=1): cv.positive_float,
+        }),
         cv.Optional(CONF_RETURN_AIR_LEVEL_LOW): number.number_schema(
             unit_of_measurement=UNIT_PERCENT,
             icon=ICON_FAN,
-            min_value=15,
-            max_value=95,
-            step=1
-        ).extend({cv.Required(cv.CONF_INITIAL_VALUE): 35}),
+        ).extend({
+            cv.Optional(cv.CONF_INITIAL_VALUE, default=35): cv.positive_float,
+            cv.Optional(cv.CONF_MIN_VALUE, default=15): cv.positive_float,
+            cv.Optional(cv.CONF_MAX_VALUE, default=95): cv.positive_float,
+            cv.Optional(cv.CONF_STEP, default=1): cv.positive_float,
+        }),
         cv.Optional(CONF_RETURN_AIR_LEVEL_MEDIUM): number.number_schema(
             unit_of_measurement=UNIT_PERCENT,
             icon=ICON_FAN,
-            min_value=15,
-            max_value=95,
-            step=1
-        ).extend({cv.Required(cv.CONF_INITIAL_VALUE): 50}),
+        ).extend({
+            cv.Optional(cv.CONF_INITIAL_VALUE, default=50): cv.positive_float,
+            cv.Optional(cv.CONF_MIN_VALUE, default=15): cv.positive_float,
+            cv.Optional(cv.CONF_MAX_VALUE, default=95): cv.positive_float,
+            cv.Optional(cv.CONF_STEP, default=1): cv.positive_float,
+        }),
         cv.Optional(CONF_RETURN_AIR_LEVEL_HIGH): number.number_schema(
             unit_of_measurement=UNIT_PERCENT,
             icon=ICON_FAN,
-            min_value=15,
-            max_value=95,
-            step=1
-        ).extend({cv.Required(cv.CONF_INITIAL_VALUE): 70}),
+        ).extend({
+            cv.Optional(cv.CONF_INITIAL_VALUE, default=70): cv.positive_float,
+            cv.Optional(cv.CONF_MIN_VALUE, default=15): cv.positive_float,
+            cv.Optional(cv.CONF_MAX_VALUE, default=95): cv.positive_float,
+            cv.Optional(cv.CONF_STEP, default=1): cv.positive_float,
+        }),
         cv.Optional(CONF_SUPPLY_AIR_LEVEL_ABSENT): number.number_schema(
             unit_of_measurement=UNIT_PERCENT,
-            icon=ICON_FAN,
-            min_value=15,
-            max_value=95,
-            step=1
-        ).extend({cv.Required(cv.CONF_INITIAL_VALUE): 15}),
+        ).extend({
+            cv.Optional(cv.CONF_INITIAL_VALUE, default=15): cv.positive_float,
+            cv.Optional(cv.CONF_MIN_VALUE, default=15): cv.positive_float,
+            cv.Optional(cv.CONF_MAX_VALUE, default=95): cv.positive_float,
+            cv.Optional(cv.CONF_STEP, default=1): cv.positive_float,
+        }),
         cv.Optional(CONF_SUPPLY_AIR_LEVEL_LOW): number.number_schema(
             unit_of_measurement=UNIT_PERCENT,
             icon=ICON_FAN,
-            min_value=15,
-            max_value=95,
-            step=1
-        ).extend({cv.Required(cv.CONF_INITIAL_VALUE): 35}),
+        ).extend({
+            cv.Optional(cv.CONF_INITIAL_VALUE, default=35): cv.positive_float,
+            cv.Optional(cv.CONF_MIN_VALUE, default=15): cv.positive_float,
+            cv.Optional(cv.CONF_MAX_VALUE, default=95): cv.positive_float,
+            cv.Optional(cv.CONF_STEP, default=1): cv.positive_float,
+        }),
         cv.Optional(CONF_SUPPLY_AIR_LEVEL_MEDIUM): number.number_schema(
             unit_of_measurement=UNIT_PERCENT,
             icon=ICON_FAN,
-            min_value=15,
-            max_value=95,
-            step=1
-        ).extend({cv.Required(cv.CONF_INITIAL_VALUE): 50}),
+        ).extend({
+            cv.Optional(cv.CONF_INITIAL_VALUE, default=50): cv.positive_float,
+            cv.Optional(cv.CONF_MIN_VALUE, default=15): cv.positive_float,
+            cv.Optional(cv.CONF_MAX_VALUE, default=95): cv.positive_float,
+            cv.Optional(cv.CONF_STEP, default=1): cv.positive_float,
+        }),
         cv.Optional(CONF_SUPPLY_AIR_LEVEL_HIGH): number.number_schema(
             unit_of_measurement=UNIT_PERCENT,
             icon=ICON_FAN,
-            min_value=15,
-            max_value=95,
-            step=1
-        ).extend({cv.Required(cv.CONF_INITIAL_VALUE): 70}),
+        ).extend({
+            cv.Optional(cv.CONF_INITIAL_VALUE, default=70): cv.positive_float,
+            cv.Optional(cv.CONF_MIN_VALUE, default=15): cv.positive_float,
+            cv.Optional(cv.CONF_MAX_VALUE, default=95): cv.positive_float,
+            cv.Optional(cv.CONF_STEP, default=1): cv.positive_float,
+        }),
         cv.Optional(CONF_SYNC_FAN_LEVELS): button.button_schema(
             icon="mdi:sync",
         ).extend(),
