@@ -625,6 +625,7 @@ comfoair_sensors_schemas = cv.Schema(
             cv.Optional(CONF_STEP, default=1): cv.positive_float,
         }),
         cv.Optional(CONF_SYNC_FAN_LEVELS): button.button_schema(
+            button.Button,
             icon="mdi:sync",
         ).extend(),
     }
