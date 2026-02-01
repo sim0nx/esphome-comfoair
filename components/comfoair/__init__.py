@@ -13,6 +13,8 @@ from esphome.const import (CONF_ID, CONF_UART_ID, DEVICE_CLASS_CURRENT,
 
 comfoair_ns = cg.esphome_ns.namespace("comfoair")
 ComfoAirComponent = comfoair_ns.class_('ComfoAirComponent', climate.Climate, cg.Component, uart.UARTDevice)
+ComfoAirNumber = comfoair_ns.class_("ComfoAirNumber", number.Number)
+ComfoAirSyncButton = comfoair_ns.class_("ComfoAirSyncButton", button.Button)
 
 DEPENDENCIES = ["uart"]
 AUTO_LOAD = ["sensor", "climate", "binary_sensor", "text_sensor", "select", "number", "button"]
@@ -545,7 +547,7 @@ comfoair_sensors_schemas = cv.Schema(
         ).extend(),
 
         cv.Optional(CONF_RETURN_AIR_LEVEL_ABSENT): number.number_schema(
-            number.Number,
+            ComfoAirNumber,
             unit_of_measurement=UNIT_PERCENT,
             icon=ICON_FAN,
         ).extend({
@@ -555,7 +557,7 @@ comfoair_sensors_schemas = cv.Schema(
             cv.Optional(CONF_STEP, default=1): cv.positive_float,
         }),
         cv.Optional(CONF_RETURN_AIR_LEVEL_LOW): number.number_schema(
-            number.Number,
+            ComfoAirNumber,
             unit_of_measurement=UNIT_PERCENT,
             icon=ICON_FAN,
         ).extend({
@@ -565,7 +567,7 @@ comfoair_sensors_schemas = cv.Schema(
             cv.Optional(CONF_STEP, default=1): cv.positive_float,
         }),
         cv.Optional(CONF_RETURN_AIR_LEVEL_MEDIUM): number.number_schema(
-            number.Number,
+            ComfoAirNumber,
             unit_of_measurement=UNIT_PERCENT,
             icon=ICON_FAN,
         ).extend({
@@ -575,7 +577,7 @@ comfoair_sensors_schemas = cv.Schema(
             cv.Optional(CONF_STEP, default=1): cv.positive_float,
         }),
         cv.Optional(CONF_RETURN_AIR_LEVEL_HIGH): number.number_schema(
-            number.Number,
+            ComfoAirNumber,
             unit_of_measurement=UNIT_PERCENT,
             icon=ICON_FAN,
         ).extend({
@@ -585,7 +587,7 @@ comfoair_sensors_schemas = cv.Schema(
             cv.Optional(CONF_STEP, default=1): cv.positive_float,
         }),
         cv.Optional(CONF_SUPPLY_AIR_LEVEL_ABSENT): number.number_schema(
-            number.Number,
+            ComfoAirNumber,
             unit_of_measurement=UNIT_PERCENT,
             icon=ICON_FAN,
         ).extend({
@@ -595,7 +597,7 @@ comfoair_sensors_schemas = cv.Schema(
             cv.Optional(CONF_STEP, default=1): cv.positive_float,
         }),
         cv.Optional(CONF_SUPPLY_AIR_LEVEL_LOW): number.number_schema(
-            number.Number,
+            ComfoAirNumber,
             unit_of_measurement=UNIT_PERCENT,
             icon=ICON_FAN,
         ).extend({
@@ -605,7 +607,7 @@ comfoair_sensors_schemas = cv.Schema(
             cv.Optional(CONF_STEP, default=1): cv.positive_float,
         }),
         cv.Optional(CONF_SUPPLY_AIR_LEVEL_MEDIUM): number.number_schema(
-            number.Number,
+            ComfoAirNumber,
             unit_of_measurement=UNIT_PERCENT,
             icon=ICON_FAN,
         ).extend({
@@ -615,7 +617,7 @@ comfoair_sensors_schemas = cv.Schema(
             cv.Optional(CONF_STEP, default=1): cv.positive_float,
         }),
         cv.Optional(CONF_SUPPLY_AIR_LEVEL_HIGH): number.number_schema(
-            number.Number,
+            ComfoAirNumber,
             unit_of_measurement=UNIT_PERCENT,
             icon=ICON_FAN,
         ).extend({
@@ -625,7 +627,7 @@ comfoair_sensors_schemas = cv.Schema(
             cv.Optional(CONF_STEP, default=1): cv.positive_float,
         }),
         cv.Optional(CONF_SYNC_FAN_LEVELS): button.button_schema(
-            button.Button,
+            ComfoAirSyncButton,
             icon="mdi:sync",
         ).extend(),
     }
@@ -665,7 +667,12 @@ def to_code(config):
             elif k == "select":
                 sens = yield select.new_select(config[v], options=["Large", "Small"])
             elif k == "number":
-                sens = yield number.new_number(config[v])
+                sens = yield number.new_number(
+                    config[v],
+                    min_value=config[v][CONF_MIN_VALUE],
+                    max_value=config[v][CONF_MAX_VALUE],
+                    step=config[v][CONF_STEP],
+                    )
             elif k == "button":
                 sens = yield button.new_button(config[v])
             if sens is not None:
