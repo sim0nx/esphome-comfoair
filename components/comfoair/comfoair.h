@@ -1297,7 +1297,13 @@ namespace esphome
       void set_supply_air_level_low(ComfoAirNumber *supply_air_level_low) { this->supply_air_level_low = supply_air_level_low; };
       void set_supply_air_level_medium(ComfoAirNumber *supply_air_level_medium) { this->supply_air_level_medium = supply_air_level_medium; };
       void set_supply_air_level_high(ComfoAirNumber *supply_air_level_high) { this->supply_air_level_high = supply_air_level_high; };
-      void set_sync_fan_levels(ComfoAirSyncButton *b) { this->sync_button_ = b; }
+      void set_sync_fan_levels(ComfoAirSyncButton *b)
+      {
+        this->sync_button_ = b;
+        if (this->sync_button_ != nullptr) {
+          this->sync_button_->set_parent(this);
+        }
+      }
     };
 
     inline const char *ComfoAirComponent::unit_size_text_label_(uint8_t raw_size) const
