@@ -611,13 +611,13 @@ namespace esphome
           if (return_air_level_absent != nullptr) return_air_level_absent->publish_state(msg[0]);
           if (return_air_level_low != nullptr)    return_air_level_low->publish_state(msg[1]);
           if (return_air_level_medium != nullptr) return_air_level_medium->publish_state(msg[2]);
-          if (return_air_level_high != nullptr)   return_air_level_high->publish_state(msg[6]);
+          if (return_air_level_high != nullptr)   return_air_level_high->publish_state(msg[10]);
 
           // Update Supply Air Numbers
           if (supply_air_level_absent != nullptr) supply_air_level_absent->publish_state(msg[3]);
           if (supply_air_level_low != nullptr)    supply_air_level_low->publish_state(msg[4]);
           if (supply_air_level_medium != nullptr) supply_air_level_medium->publish_state(msg[5]);
-          if (supply_air_level_high != nullptr)   supply_air_level_high->publish_state(msg[7]);
+          if (supply_air_level_high != nullptr)   supply_air_level_high->publish_state(msg[11]);
 
           publish_state();
 
