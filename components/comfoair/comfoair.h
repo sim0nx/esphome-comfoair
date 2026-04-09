@@ -304,7 +304,7 @@ namespace esphome
             return;
         }
 
-        uint8_t data[8];
+        uint8_t data[9];
         // Map states to bytes according to 0xCF specification
         // std::clamp provides a final hardware safety check
         data[0] = (uint8_t)std::clamp((int)return_air_level_absent->state, 15, 95);
@@ -315,7 +315,7 @@ namespace esphome
         data[5] = (uint8_t)std::clamp((int)supply_air_level_medium->state, 15, 95);
         data[6] = (uint8_t)std::clamp((int)return_air_level_high->state, 15, 95);
         data[7] = (uint8_t)std::clamp((int)supply_air_level_high->state, 15, 95);
-        //data[8] = 0x00; // Reserved/Padding
+        data[8] = 0x00; // Reserved/Padding
 
         ESP_LOGD("comfoair", "Sending 0xCF: Setting fan speed percentages.");
         write_command_(CMD_SET_VENTILATION_LEVEL, data, sizeof(data));
